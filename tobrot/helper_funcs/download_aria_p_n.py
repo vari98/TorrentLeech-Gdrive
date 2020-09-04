@@ -45,14 +45,16 @@ async def aria_start():
     # TODO: this does not work, need to investigate this.
     # but for now, https://t.me/TrollVoiceBot?start=858
     aria2_daemon_start_cmd.append("--enable-rpc")
+    aria2_daemon_start_cmd.append("--check-certificate=false")
     aria2_daemon_start_cmd.append("--follow-torrent=mem")
     aria2_daemon_start_cmd.append("--max-connection-per-server=10")
     aria2_daemon_start_cmd.append("--min-split-size=10M")
     aria2_daemon_start_cmd.append("--rpc-listen-all=false")
     aria2_daemon_start_cmd.append(f"--rpc-listen-port={ARIA_TWO_STARTED_PORT}")
     aria2_daemon_start_cmd.append("--rpc-max-request-size=1024M")
-    aria2_daemon_start_cmd.append("--seed-ratio=0.0")
-    aria2_daemon_start_cmd.append("--seed-time=1")
+    aria2_daemon_start_cmd.append("--peer-id-prefix=-qB4250-")
+    aria2_daemon_start_cmd.append("--user-agent=qBittorrent/4.2.5")
+    aria2_daemon_start_cmd.append("--seed-time=0.01")
     aria2_daemon_start_cmd.append("--max-overall-upload-limit=1K")
     aria2_daemon_start_cmd.append("--split=10")
     aria2_daemon_start_cmd.append(f"--bt-stop-timeout={MAX_TIME_TO_WAIT_FOR_TORRENTS_TO_START}")
@@ -448,25 +450,25 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                     pass
                 #
                 if is_file is None :
-                   msgg = f"Conn: {file.connections} <b>|</b> GID: <code>{gid}</code>"
+                   msgg = f"<b>Connections :</b> <code>{file.connections}</code> \n<b>GID :</b> <code>{gid}</code>"
                 else :
-                   msgg = f"P: {file.connections} | S: {file.num_seeders} <b>|</b> GID: <code>{gid}</code>"
-                msg = f"\n`{downloading_dir_name}`"
-                msg += f"\n<b>Speed</b>: {file.download_speed_string()}"
-                msg += f"\n<b>Status</b>: {file.progress_string()} <b>of</b> {file.total_length_string()} <b>|</b> {file.eta_string()} <b>|</b> {msgg}"
-                #msg += f"\nSize: {file.total_length_string()}"
+                   msgg = f"<b>Info :-  Seeds :</b> <code>{file.num_seeders}</code> | <b>Peers :</b> <code>{file.connections}</code> \n<b>GID :</b> <code>{gid}</code>"
+                msg = f"\n<b>Filename :</b> `{downloading_dir_name}`"
+                msg += f"\n<b>Speed :</b> <code>{file.download_speed_string()}</code>"
+                msg += f"\n<b>Status :</b> <code>{file.progress_string()}</code> <b>of</b> <code>{file.total_length_string()}</code> \n<b>ETA :</b> <code>{file.eta_string()}</code> \n{msgg}"
+                #msg += f"\n<b>Size :</b> <code>{file.total_length_string()}</code>"
 
                 #if is_file is None :
-                   #msg += f"\n<b>Conn:</b> {file.connections}, GID: <code>{gid}</code>"
+                   #msg += f"\n<b>Connections :</b> <code>{file.connections}</code> \n<b>GID :</b> <code>{gid}</code>"
                 #else :
-                   #msg += f"\n<b>Info:</b>[ P : {file.connections} | S : {file.num_seeders} ], GID: <code>{gid}</code>"
+                   #msg += f"\n<b>Info :-  Seeds :</b> <code>{file.num_seeders}</code> | <b>Peers :</b> <code>{file.connections}</code> \n<b>GID :</b> <code>{gid}</code>"
 
-                #msg += f"\nStatus: {file.status}"
-                #msg += f"\nETA: {file.eta_string()}"
-                #msg += f"\nGID: <code>{gid}</code>"
+                #msg += f"\n<b>Status :</b> <code>{file.status}</code>"
+                #msg += f"\n<b>ETA :</b> <code>{file.eta_string()}</code>"
+                #msg += f"\n<b>GID :</b> <code>{gid}</code>"
                 inline_keyboard = []
                 ikeyboard = []
-                ikeyboard.append(InlineKeyboardButton("Cancel 🚫", callback_data=(f"cancel {gid}").encode("UTF-8")))
+                ikeyboard.append(InlineKeyboardButton("❌   Cancel   ❌", callback_data=(f"cancel {gid}").encode("UTF-8")))
                 inline_keyboard.append(ikeyboard)
                 reply_markup = InlineKeyboardMarkup(inline_keyboard)
                 #msg += reply_markup
@@ -483,7 +485,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
             await check_progress_for_dl(aria2, gid, event, previous_message)
         else:
             await asyncio.sleep(EDIT_SLEEP_TIME_OUT)
-            await event.edit(f"Downloaded Successfully: `{file.name}` <a href='tg://user?id={g_id}'>🤒</a>", parse_mode="html")
+            await event.edit(f"<b>Downloaded Successfully :</b> `{file.name}` <a href='tg://user?id={g_id}'>✅</a>", parse_mode="html")
             return True
     except aria2p.client.ClientException:
         pass
