@@ -453,7 +453,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                    msgg = f"<b>Connections :</b> <code>{file.connections}</code> \n<b>GID :</b> <code>{gid}</code>"
                 else :
                    msgg = f"<b>Info :-  Seeds :</b> <code>{file.num_seeders}</code> | <b>Peers :</b> <code>{file.connections}</code> \n<b>GID :</b> <code>{gid}</code>"
-                msg = f"\n<b>Filename :</b> `{downloading_dir_name}`"
+                msg = f"\n<b>Filename :</b> <code>{downloading_dir_name}</code>"
                 msg += f"\n<b>Speed :</b> <code>{file.download_speed_string()}</code>"
                 msg += f"\n<b>Status :</b> <code>{file.progress_string()}</code> <b>of</b> <code>{file.total_length_string()}</code> \n<b>ETA :</b> <code>{file.eta_string()}</code> \n{msgg}"
                 #msg += f"\n<b>Size :</b> <code>{file.total_length_string()}</code>"
@@ -485,7 +485,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
             await check_progress_for_dl(aria2, gid, event, previous_message)
         else:
             await asyncio.sleep(EDIT_SLEEP_TIME_OUT)
-            await event.edit(f"<b>Downloaded Successfully :</b> `{file.name}` <a href='tg://user?id={g_id}'>✅</a>", parse_mode="html")
+            await event.edit(f"<a href='tg://user?id={g_id}'>✅</a> <b>Downloaded Successfully :</b> <code>{file.name}</code>", parse_mode="html")
             return True
     except aria2p.client.ClientException:
         pass
