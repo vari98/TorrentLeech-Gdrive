@@ -485,7 +485,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
             await check_progress_for_dl(aria2, gid, event, previous_message)
         else:
             await asyncio.sleep(EDIT_SLEEP_TIME_OUT)
-            await event.edit(f"<a href='tg://user?id={g_id}'>✅</a> <b>Downloaded Successfully :</b> <code>{file.name}</code>", parse_mode="html")
+            await event.edit(f"✅ <b>Downloaded Successfully :</b> <code>{file.name}</code>")
             return True
     except aria2p.client.ClientException:
         pass
