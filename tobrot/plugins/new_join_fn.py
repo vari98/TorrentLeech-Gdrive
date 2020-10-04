@@ -38,7 +38,7 @@ async def help_message_f(client, message):
     #message_id = 99
     # display the /help
     
-    await message.reply_text("""🎊 **Welcome** 🎊 \n🌐 Start leeching to Drive‼️""")
+    await message.reply_text("""""")
 
 
 async def rename_message_f(client, message):
